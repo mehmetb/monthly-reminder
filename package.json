@@ -7,7 +7,16 @@
   "repository": "git@github.com:mehmetb/monthly-reminder.git",
   "author": "Mehmet Baker <mehmet@mehmetbaker.dev> (https://mehmetbaker.dev)",
   "license": "GPL-3.0-or-later",
+  "scripts": {
+    "lint": "eslint *.js"
+  },
   "dependencies": {
+    "nodemailer": "^6.4.6",
     "yargs": "^15.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1"
   }
 }

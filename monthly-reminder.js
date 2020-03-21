@@ -1,5 +1,6 @@
 const fs = require('fs');
 const yargs = require('yargs');
+const checkCalendar = require('./check-calendar.js');
 const Utils = require('./Utils.js');
 
 let subYargs;
@@ -77,7 +78,7 @@ async function listReminders(reminders) {
 
     console.log('List of reminders:\n');
 
-    for (let i = 0; i < reminders.length; ++i) {
+    for (let i = 0; i < reminders.length; i += 1) {
       const index = `${i + 1}`.padStart(digitCount, ' ');
       console.log(`  ${index})  ${reminders[i].name}`);
     }
@@ -101,12 +102,12 @@ async function deleteReminders() {
     const indexes = answer
       .split(',')
       .map((index) => Number(index.trim()))
-      .filter((index) => !isNaN(index) && index > 0);
+      .filter((index) => !Number.isNaN(index) && index > 0);
 
     if (indexes.length) {
       const remainingReminders = [];
 
-      for (let i = 0; i < reminders.length; ++i) {
+      for (let i = 0; i < reminders.length; i += 1) {
         if (!indexes.includes(i + 1)) {
           remainingReminders.push(reminders[i]);
         }
@@ -115,7 +116,7 @@ async function deleteReminders() {
       await Utils.setReminders(remainingReminders);
     }
   } catch (ex) {
-    if (ex === 'SIGCONT') {
+    if (ex.message === 'SIGCONT') {
       deleteReminders();
       return;
     }
@@ -195,6 +196,9 @@ yargs
   )
   .command(['del', 'delete'], 'Delete reminder(s).', {}, deleteReminders)
   .command('list', 'List all reminders.', {}, () => listReminders())
+  .command(['exec', 'execute'], 'Send emails for the reminders that are due today.', {}, checkCalendar)
+  .example('$0 add -n Bills -d 15 -s "Reminder: Pay bills" -f body.html')
+  .example('$0 add -n Rent -d 21 -s "Reminder: Pay rent" -b "<h1>Pay the rent</h1>"')
   .epilog('Copyright 2020 Mehmet Baker')
   .wrap(100)
   .argv;

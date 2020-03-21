@@ -12,7 +12,7 @@ class Utils {
 
   static async setReminders(reminders) {
     await fs.promises.writeFile(
-      REMINDER_DB_LOCATION, 
+      REMINDER_DB_LOCATION,
       `${JSON.stringify(reminders, null, 2)}\n`,
     );
   }
@@ -29,7 +29,7 @@ class Utils {
 
       rl.on('SIGCONT', () => {
         rl.close();
-        reject('SIGCONT');
+        reject(new Error('SIGCONT'));
       });
 
       rl.on('SIGINT', () => {
@@ -46,4 +46,3 @@ class Utils {
 }
 
 module.exports = Utils;
-
