@@ -13,7 +13,7 @@ class Utils {
   static async setReminders(reminders) {
     await fs.promises.writeFile(
       REMINDER_DB_LOCATION, 
-      JSON.stringify(reminders, null, 2),
+      `${JSON.stringify(reminders, null, 2)}\n`,
     );
   }
 
