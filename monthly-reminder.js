@@ -1,5 +1,8 @@
+const fs = require('fs');
 const yargs = require('yargs');
 const Utils = require('./Utils.js');
+
+let subYargs;
 
 async function addReminder(commandArgs) {
   try {
@@ -14,8 +17,50 @@ async function addReminder(commandArgs) {
       }
     }
 
+    const allBits = ['name', 'date', 'subject', 'body', 'file', 'previousBusinessDay', 'nextBusinessDay'];
+
+    // All arguments must be supplied once and only once
+    for (const bit of allBits) {
+      if (commandArgs[bit] instanceof Array) {
+        subYargs.showHelp();
+        console.log();
+        console.error(`Argument ${bit} is supplied more than once`);
+        process.exit(1);
+      }
+    }
+
+    const {
+      name,
+      date,
+      body,
+      file,
+      previousBusinessDay,
+    } = commandArgs;
+
+    const subject = commandArgs.subject || `Reminder: ${name}`;
+
+    let messageBody = `<h1 align="center">You Have Been Reminded</h1>
+      <br />
+      <br />
+      Reminder: <strong>${name}</strong>
+      <br />
+      <br />
+      Yours truly,
+      Reminder Bot :)
+      `;
+
+    if (body) {
+      messageBody = body;
+    } else if (file) {
+      messageBody = await fs.promises.readFile(file, 'utf8');
+    }
+
     reminders.push({
-      name: commandArgs.name,
+      name,
+      date,
+      subject,
+      body: messageBody,
+      nextBusinessDay: !previousBusinessDay,
     });
 
     await Utils.setReminders(reminders);
@@ -80,25 +125,76 @@ async function deleteReminders() {
   }
 }
 
+// eslint-disable-next-line no-unused-expressions
 yargs
-  .demandCommand(1)
+  .usage('Usage: $0 <command> [options]')
   .alias('v', 'version')
   .help('h')
   .alias('h', 'help')
-  .command('list', 'list all reminders', {}, () => listReminders())
-  .command(['delete', 'del'], 'delete reminder(s)', {}, deleteReminders)
   .command(
-    'add', 
-    'add a reminder', 
-    (subYargs) => {
+    'add',
+    'Adds a reminder.',
+    (_subYargs) => {
+      subYargs = _subYargs;
+
       subYargs
         .option('name', {
-          describe: 'reminder name',
+          describe: 'Reminder name',
           alias: 'n',
+          nargs: 1,
+          type: 'string',
+          requiresArg: true,
         })
-        .demandOption('name');
+        .option('date', {
+          describe: 'Target date',
+          alias: ['d'],
+          nargs: 1,
+          type: 'number',
+          requiresArg: true,
+        })
+        .option('subject', {
+          describe: 'Email subject',
+          alias: ['s'],
+          nargs: 1,
+          type: 'string',
+          requiresArg: true,
+        })
+        .option('body', {
+          describe: 'Message body',
+          alias: ['b'],
+          nargs: 1,
+          type: 'string',
+          requiresArg: true,
+          conflicts: 'file',
+        })
+        .option('file', {
+          type: 'string',
+          describe: 'Message body from file',
+          alias: ['f'],
+          nargs: 1,
+          requiresArg: true,
+          conflicts: 'body',
+        })
+        .option('next-business-day', {
+          alias: ['nbd'],
+          describe: 'When <date> is not a weekday, trigger the reminder on the next business day. This is the default.',
+          conflicts: 'previous-business-day',
+          nargs: 0,
+          type: 'boolean',
+        })
+        .option('previous-business-day', {
+          alias: ['pbd'],
+          describe: 'When <date> is not a weekday, trigger the reminder on the previous business day',
+          conflicts: 'next-business-day',
+          type: 'boolean',
+          nargs: 0,
+        })
+        .demandOption(['name', 'date']);
     },
     addReminder,
   )
-  .argv
-
+  .command(['del', 'delete'], 'Delete reminder(s).', {}, deleteReminders)
+  .command('list', 'List all reminders.', {}, () => listReminders())
+  .epilog('Copyright 2020 Mehmet Baker')
+  .wrap(100)
+  .argv;
