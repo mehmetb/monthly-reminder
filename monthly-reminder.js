@@ -181,17 +181,25 @@ yargs
         })
         .option('next-business-day', {
           alias: ['nbd'],
-          describe: 'When <date> is not a weekday, trigger the reminder on the next business day. This is the default.',
+          describe: 'When <date> is not a weekday, trigger the reminder on the next business day. '
+            + 'This is the default.',
           conflicts: 'previous-business-day',
           nargs: 0,
           type: 'boolean',
         })
         .option('previous-business-day', {
           alias: ['pbd'],
-          describe: 'When <date> is not a weekday, trigger the reminder on the previous business day',
+          describe: 'When <date> is not a weekday, trigger the reminder on the previous business day.',
           conflicts: 'next-business-day',
           type: 'boolean',
           nargs: 0,
+        })
+        .option('recipient', {
+          alias: ['r', 'rec'],
+          describe: 'The recipient which will receive the reminder email. If not set, the defaultRecipient '
+            + 'in config.json is going to be used.',
+          type: 'string',
+          nargs: 1,
         })
         .demandOption(['name', 'date']);
     },
@@ -202,6 +210,7 @@ yargs
   .command(['exec', 'execute'], 'Send emails for the reminders that are due today.', {}, checkCalendar)
   .example('$0 add -n Bills -d 15 -s "Reminder: Pay bills" -f body.html')
   .example('$0 add -n Rent -d 21 -s "Reminder: Pay rent" -b "<h1>Pay the rent</h1>"')
+  .example('$0 add -n Rent -d 21 -s "Reminder: Pay rent" -b "<h1>Pay the rent</h1>" -r someone@example.com')
   .epilog('Copyright 2020 Mehmet Baker')
-  .wrap(100)
+  .wrap(170)
   .argv;
