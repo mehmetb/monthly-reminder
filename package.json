@@ -2,6 +2,7 @@
   "name": "monthly-reminder",
   "version": "1.0.0",
   "description": "A reminder which sets off only on weekdays!",
+  "keywords": ["reminder", "calendar", "notifier", "event", "schedule", "scheduler"],
   "bin": "./monthly-reminder.js",
   "main": "monthly-reminder.js",
   "repository": "git@github.com:mehmetb/monthly-reminder.git",
