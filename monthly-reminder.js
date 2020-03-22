@@ -1,3 +1,24 @@
+#!/usr/bin/env node
+
+/**
+* Copyright 2020 Mehmet Baker
+*
+* This file is part of monthly-reminder.
+*
+* monthly-reminder is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* monthly-reminder is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with monthly-reminder. If not, see <https://www.gnu.org/licenses/>.
+*/
+
 const fs = require('fs');
 const yargs = require('yargs');
 const checkCalendar = require('./check-calendar.js');
@@ -13,6 +34,7 @@ async function addReminder(commandArgs) {
     try {
       reminders = await Utils.getReminders();
     } catch (readException) {
+      // If file doesn't exist on the dist then we'll just create a new one.
       if (readException.code !== 'ENOENT') {
         throw readException;
       }
@@ -20,7 +42,8 @@ async function addReminder(commandArgs) {
 
     const allBits = ['name', 'date', 'subject', 'body', 'file', 'previousBusinessDay', 'nextBusinessDay'];
 
-    // All arguments must be supplied once and only once
+    // Prevents arguments with multiple occurrences:
+    // $> monthly-reminder -n my-reminder -d 2 -d 25
     for (const bit of allBits) {
       if (commandArgs[bit] instanceof Array) {
         yargsOfAddCommand.showHelp();
@@ -77,11 +100,14 @@ async function addReminder(commandArgs) {
 async function listReminders(reminders) {
   try {
     reminders = reminders || await Utils.getReminders();
+
+    // Digit count of the last reminder
     const digitCount = Math.floor(Math.log10(reminders.length)) + 1;
 
     console.log('List of reminders:\n');
 
     for (let i = 0; i < reminders.length; i += 1) {
+      // Pad all the indexes to the right
       const index = `${i + 1}`.padStart(digitCount, ' ');
       console.log(`  ${index})  ${reminders[i].name}`);
     }
@@ -99,6 +125,7 @@ async function deleteReminders() {
   try {
     const reminders = await Utils.getReminders();
 
+    // We first list all the reminders so the user can see the indexes
     await listReminders(reminders);
 
     const answer = await Utils.askQuestion('Choose which reminder(s) to delete (comma-separated): ');
