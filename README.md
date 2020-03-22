@@ -1,37 +1,52 @@
-## Welcome to GitHub Pages
+## Monthly Reminders
 
-You can use the [editor on GitHub](https://github.com/mehmetb/monthly-reminder/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+The reminders will go off only on workdays. For example, if you set a reminder for 25th of each month
+and 25th is a Saturday or a Sunday then the reminder will be sent on Monday as if it was scheduled to
+Monday.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Installation
 
-### Markdown
+You can install the package from NPM.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```bash
+npm install monthly-reminder
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+After installing you need to add an entry to your crontab that will execute monthly-reminder daily.
 
-### Jekyll Themes
+```bash
+0 9 * * * /path/to/monthly-remider/monthly-reminder.js exec
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/mehmetb/monthly-reminder/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### Configuration
 
-### Support or Contact
+You need to create a `config.json` in the monthly-reminder directory. There is an example config
+that you can copy and derive.
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+`config.json` content should be like this:
+
+```json
+{
+  "nodemailer": {
+    "host": "smtp.example.com",
+    "port": 465,
+    "secure": true,
+    "auth": {
+      "user": "username",
+      "pass": "password"
+    }
+  },
+  "defaultRecipient": "someone@example.com"
+}
+```
+
+monthly-reminder uses [Nodemailer](https://github.com/nodemailer/nodemailer) to send emails. The `nodemailer`
+object in the config is passed to `createTransport` of Nodemailer without modification. You may need additional
+settings to send emails from your email provider. You can find all available configuration keys in [Nodemailer
+documentation](https://nodemailer.com/smtp/).
+
+### License
+
+GNU General Public License v3.0 or later.
+
+See [COPYING](COPYING) to see the full text.
