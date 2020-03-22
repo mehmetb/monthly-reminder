@@ -1,12 +1,20 @@
 {
   "name": "monthly-reminder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A reminder which sets off only on weekdays!",
-  "bin": "./monthly-reminder.js",
-  "main": "monthly-reminder.js",
-  "repository": "git@github.com:mehmetb/monthly-reminder.git",
-  "author": "Mehmet Baker <mehmet@mehmetbaker.dev> (https://mehmetbaker.dev)",
+  "keywords": ["reminder", "calendar", "notifier", "event", "schedule", "scheduler"],
+  "homepage": "https://github.com/mehmetb/monthly-reminder#readme",
+  "bugs": {
+    "url": "https://github.com/mehmetb/monthly-reminder/issues"
+  },
   "license": "GPL-3.0-or-later",
+  "author": "Mehmet Baker <mehmet@mehmetbaker.dev> (https://mehmetbaker.dev)",
+  "main": "monthly-reminder.js",
+  "bin": "./monthly-reminder.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mehmetb/monthly-reminder.git"
+  },
   "scripts": {
     "lint": "eslint *.js"
   },
