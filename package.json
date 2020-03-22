@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "description": "A reminder which sets off only on weekdays!",
   "keywords": ["reminder", "calendar", "notifier", "event", "schedule", "scheduler"],
-  "homepage": "https://github.com/mehmetb/monthly-reminder#readme",
+  "homepage": "https://mehmetb.github.io/monthly-reminder",
   "bugs": {
     "url": "https://github.com/mehmetb/monthly-reminder/issues"
   },
