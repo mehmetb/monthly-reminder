@@ -19,21 +19,39 @@ Monday.
 You can install the package from NPM.
 
 ```bash
-npm install monthly-reminder
+npm install --global monthly-reminder
 ```
 
 After installing you need to add an entry to your crontab that will execute monthly-reminder daily.
+And to do that, we need to know the absolute path of monthly-reminder.
 
 ```bash
-0 9 * * * /path/to/monthly-remider/monthly-reminder.js exec
+$> which monthly-reminder
+/usr/bin/monthly-reminder
+$> ls -l /usr/bin/monthly-reminder
+lrwxrwxrwx 1 root root 56 Mar 22 10:48 /usr/bin/monthly-reminder -> ../lib/node_modules/monthly-reminder/monthly-reminder.js
+```
+
+Now we have all the information we need. Run `crontab -e` and schedule a daily job:
+
+```bash
+$> crontab -e
+# You can choose a different hour to receive the emails but the program must run daily.
+0 9 * * * /usr/bin/monthly-reminder exec
 ```
 
 ### Configuration
 
-You need to create a `config.json` in the monthly-reminder directory. There is an example config
-that you can copy and derive.
+You need to create a `config.json` in the monthly-reminder directory. We found that directory in the previous step:
+`/usr/lib/node_modules/monthly-reminder`
 
-`config.json` content should be like this:
+Let's change the directory:
+
+```bash
+$> cd /usr/lib/node_modules/monthly-reminder
+```
+
+There is an example config that you can copy and derive. `config.json` content should be like this:
 
 ```json
 {
@@ -60,7 +78,7 @@ documentation](https://nodemailer.com/smtp/).
 All available commands are listed in the general help section:
 
 ```bash
-monthly-reminder.js -h
+$> monthly-reminder -h
 ```
 
 #### Adding reminders
@@ -68,7 +86,7 @@ monthly-reminder.js -h
 Set a reminder by running this command:
 
 ```bash
-monthly-reminder.js add --name "Pay the Bills" --date 19 --recipient me@email.com
+$> monthly-reminder add --name "Pay the Bills" --date 19 --recipient me@email.com
 ```
 
 Now the reminder is set. You will be reminded to pay your bills on 19th of each month (or the next business day where
@@ -77,7 +95,7 @@ Now the reminder is set. You will be reminded to pay your bills on 19th of each 
 There are a couple of other settings and customizations that you can learn more about by visiting the help section.
 
 ```bash
-monthly-reminder.js add -h
+$> monthly-reminder add -h
 ```
 
 #### Listing reminders
@@ -85,7 +103,7 @@ monthly-reminder.js add -h
 You can see a list of your reminders by running:
 
 ```bash
-monthly-reminder.js list
+$> monthly-reminder list
 ```
 
 #### Deleting reminders
@@ -94,7 +112,7 @@ The command below will first list the reminders and then prompt you to choose wh
 delete. You can delete multiple reminders by separating them with commas.
 
 ```bash
-monthly-reminder.js delete
+$> monthly-reminder delete
 ```
 
 ### License
