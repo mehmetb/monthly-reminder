@@ -3,7 +3,7 @@ const yargs = require('yargs');
 const checkCalendar = require('./check-calendar.js');
 const Utils = require('./Utils.js');
 
-let subYargs;
+let yargsOfAddCommand;
 
 async function addReminder(commandArgs) {
   try {
@@ -23,7 +23,7 @@ async function addReminder(commandArgs) {
     // All arguments must be supplied once and only once
     for (const bit of allBits) {
       if (commandArgs[bit] instanceof Array) {
-        subYargs.showHelp();
+        yargsOfAddCommand.showHelp();
         console.log();
         console.error(`Argument ${bit} is supplied more than once`);
         process.exit(1);
@@ -138,10 +138,10 @@ yargs
   .command(
     'add',
     'Adds a reminder.',
-    (_subYargs) => {
-      subYargs = _subYargs;
+    (subYargs) => {
+      yargsOfAddCommand = subYargs;
 
-      subYargs
+      yargsOfAddCommand
         .option('name', {
           describe: 'Reminder name',
           alias: 'n',
