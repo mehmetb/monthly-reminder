@@ -1,6 +1,6 @@
 {
   "name": "monthly-reminder",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A reminder which sets off only on weekdays!",
   "keywords": [
     "reminder",
