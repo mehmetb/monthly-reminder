@@ -22,6 +22,7 @@
     "object-curly-spacing": ["error", "always", { "objectsInObjects": false, "arraysInObjects": true }],
     "class-methods-use-this": ["warn"],
     "no-bitwise": ["warn"],
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
   }
 }

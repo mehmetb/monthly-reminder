@@ -21,8 +21,8 @@
 
 const fs = require('fs');
 const yargs = require('yargs');
-const checkCalendar = require('./check-calendar.js');
-const Utils = require('./Utils.js');
+const checkCalendar = require('./lib/check-calendar.js');
+const Utils = require('./lib/Utils.js');
 
 let yargsOfAddCommand;
 
@@ -64,7 +64,7 @@ async function addReminder(commandArgs) {
     const subject = commandArgs.subject || `Reminder: ${name}`;
 
     let messageBody = `<h1 align="center">${name}</h1>
-      <h2 align="center">You Have Been Reminded</h1>
+      <h2 align="center">You Have Been Reminded</h2>
       <hr />
       <br />
       <br />
@@ -106,7 +106,7 @@ async function listReminders(reminders) {
 
     console.log('List of reminders:\n');
 
-    for (let i = 0; i < reminders.length; i += 1) {
+    for (let i = 0; i < reminders.length; ++i) {
       // Pad all the indexes to the right
       const index = `${i + 1}`.padStart(digitCount, ' ');
       console.log(`  ${index})  ${reminders[i].name}`);
@@ -137,7 +137,7 @@ async function deleteReminders() {
     if (indexes.length) {
       const remainingReminders = [];
 
-      for (let i = 0; i < reminders.length; i += 1) {
+      for (let i = 0; i < reminders.length; ++i) {
         if (!indexes.includes(i + 1)) {
           remainingReminders.push(reminders[i]);
         }

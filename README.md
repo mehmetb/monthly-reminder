@@ -1,8 +1,6 @@
 ## Monthly Reminders
 
-The reminders will go off only on workdays. For example, if you set a reminder for 25th of each month
-and 25th is a Saturday or a Sunday then the reminder will be sent on Monday as if it was scheduled to
-Monday.
+Set a recurring reminder on a specific day of the month. If the date falls on a weekend, the alarm (actually it's an email 😅) will go off on the next weekday (or the previous weekday if you choose so).
 
 ### Table of Contents
 
@@ -36,6 +34,7 @@ Now we have all the information we need. Run `crontab -e` and schedule a daily j
 
 ```bash
 $> crontab -e
+# Make sure that you are setting the hour in your server's timezone.
 # You can choose a different hour to receive the emails but the program must run daily.
 0 9 * * * /usr/bin/monthly-reminder exec
 ```

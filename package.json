@@ -1,9 +1,16 @@
 {
   "name": "monthly-reminder",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A reminder which sets off only on weekdays!",
-  "keywords": ["reminder", "calendar", "notifier", "event", "schedule", "scheduler"],
-  "homepage": "https://github.com/mehmetb/monthly-reminder#readme",
+  "keywords": [
+    "reminder",
+    "calendar",
+    "notifier",
+    "event",
+    "schedule",
+    "scheduler"
+  ],
+  "homepage": "https://mehmetb.github.io/monthly-reminder",
   "bugs": {
     "url": "https://github.com/mehmetb/monthly-reminder/issues"
   },
@@ -16,7 +23,7 @@
     "url": "https://github.com/mehmetb/monthly-reminder.git"
   },
   "scripts": {
-    "lint": "eslint *.js"
+    "lint": "eslint **/*.js"
   },
   "dependencies": {
     "nodemailer": "^6.4.6",
