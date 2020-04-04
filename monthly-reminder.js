@@ -64,7 +64,7 @@ async function addReminder(commandArgs) {
     const subject = commandArgs.subject || `Reminder: ${name}`;
 
     let messageBody = `<h1 align="center">${name}</h1>
-      <h2 align="center">You Have Been Reminded</h1>
+      <h2 align="center">You Have Been Reminded</h2>
       <hr />
       <br />
       <br />
